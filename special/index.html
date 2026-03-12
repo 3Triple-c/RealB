@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Time to lev-up 💖</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="shortcut icon" type="image/png" href="img/fav.png" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        color: #fff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        overflow: hidden;
+        text-align: center;
+        background-color: #000;
+      }
+
+      #pinkboard {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        z-index: 2;
+        transition: opacity 1.5s ease;
+      }
+
+      #main-content {
+        position: absolute;
+        z-index: 3;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        opacity: 0;
+        transition: opacity 1.5s ease;
+        padding: 10rem;
+        /* color: red; */
+      }
+
+      #main-content.show {
+        opacity: 1;
+      }
+
+      canvas#heart {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        z-index: -1;
+      }
+
+      .wrap {
+        max-width: 90%;
+        padding: 2rem;
+        background: transparent;
+        border-radius: 1.5rem;
+        box-shadow: none;
+        z-index: 3;
+      }
+
+      .type-wrap {
+        font-size: 1.5rem;
+        line-height: 2.2rem;
+        color: white;
+      }
+
+      audio {
+        display: none;
+      }
+
+      .slideshow {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: black;
+        z-index: 4;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .slideshow img {
+        position: absolute;
+        width: 80vw;
+        height: 80vh;
+        object-fit: contain;
+        opacity: 0;
+        transition: opacity 1s ease-in-out;
+      }
+
+      .slideshow img.active {
+        opacity: 1;
+      }
+
+      .gallery {
+        display: none;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 5;
+        width: 100vw;
+        height: 100vh;
+        background: black;
+        padding: 2rem;
+        box-sizing: border-box;
+        overflow-y: auto;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: flex-start;
+        gap: 1rem;
+      }
+
+      .gallery img {
+        width: 30%;
+        max-width: 300px;
+        height: auto;
+        border-radius: 10px;
+      }
+
+      .next-button {
+        display: inline-block;
+        padding: 12px 24px;
+        font-size: 18px;
+        font-family: "Poppins", sans-serif;
+        color: white;
+        background-color: #ff69b4;
+        text-decoration: none;
+        border-radius: 30px;
+        box-shadow: 0 4px 15px rgba(255, 105, 180, 0.4);
+        transition:
+          background-color 0.3s,
+          transform 0.2s;
+        margin-bottom: 2rem;
+        animation: bounce 1s infinite;
+      }
+
+      .next-button:hover {
+        background-color: #ff1493;
+        transform: scale(1.05);
+      }
+
+      #typed {
+        font-family: "Poppins", sans-serif;
+        font-size: 1.8rem;
+        color: #fbeaff;
+        text-align: center;
+        text-shadow: 1px 1px 3px rgba(255, 182, 193, 0.6);
+        letter-spacing: 1px;
+        animation: fadeSlideIn 2s ease forwards;
+        min-height: 3rem; /* ensures no layout shift */
+        line-height: 1.6;
+        padding: 0 20px;
+        max-width: 900px;
+      }
+      @keyframes bounce {
+        from {
+          opacity: 0;
+          transform: scale(1.25);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1.15);
+        }
+      }
+      @keyframes fadeSlideIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Countdown Heart Animation -->
+    <canvas id="pinkboard"></canvas>
+
+    <!-- Main Birthday Content -->
+    <div id="main-content">
+      <canvas id="heart"></canvas>
+
+      <audio id="bg-music" loop>
+        <source src="hotline (edit).mp3" type="audio/mpeg" />
+        Your browser does not support the audio element.
+      </audio>
+      <button
+        id="toggle-music"
+        style="
+          position: fixed;
+          bottom: 20px;
+          right: 20px;
+          background: rgba(255, 105, 180, 0.9);
+          border: none;
+          border-radius: 50%;
+          width: 42px;
+          height: 42px;
+          font-size: 20px;
+          color: white;
+          cursor: pointer;
+          box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+          z-index: 1000;
+        "
+      >
+        🔊
+      </button>
+
+      <div class="wrap">
+        <div class="type-wrap">
+          <span id="typed" style="white-space: pre-wrap"></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Image Slideshow -->
+    <div id="slideshow" class="slideshow" style="display: none">
+      <img src="img/img1.jpg" class="active" />
+      <img src="img/img2.jpg" />
+      <img src="img/img3.jpg" />
+      <img src="img/img4.jpeg" />
+      <img src="img/img5.jpeg" />
+      <img src="img/img6.png" />
+      <img src="img/img7.png" />
+    </div>
+
+    <!-- Image Gallery (initially hidden) -->
+    <div id="gallery" class="gallery" style="display: none">
+      <img src="img/img1.jpg" />
+      <img src="img/img2.jpg" />
+      <img src="img/img5.jpeg" />
+      <img src="img/img6.png" />
+      <img src="img/img7.png" />
+
+      <!-- Add as many as you want -->
+
+      <div style="width: 100%; text-align: center; margin-top: 2rem">
+        <a href="cake.html" class="next-button" target="_blank"
+          >Come on, let’s make a wish together.</a
+        >
+      </div>
+    </div>
+
+    <script src="index.js"></script>
+  </body>
+</html>
