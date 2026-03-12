@@ -1,4 +1,4 @@
-const birthday = new Date("2025-03-13T00:00:00");
+const birthday = new Date("2026-03-13T00:00:00");
 const now = new Date();
 const isPast = now >= birthday;
 
