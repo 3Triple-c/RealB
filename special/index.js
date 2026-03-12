@@ -373,7 +373,7 @@ const lines = [
 ];
 
 const output = document.getElementById("typed");
-async function typeLine(line, speed = 100) {
+async function typeLine(line, speed = 70) {
   return new Promise(resolve => {
     let i = 0;
     output.textContent = "";
